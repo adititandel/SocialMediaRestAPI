@@ -204,16 +204,16 @@ public class UserService {
 			throw new NoUserFoundException("Invalid User");
 		}else {
 			List<String> friendlist=u.getFriendList();
-			List<String> friendlist1=u.getFriendList();
+			List<String> friendlist1=u1.getFriendList();
 			if(friendlist.contains(friendId)) {
 				friendlist.remove(friendlist.indexOf(friendId));
 				friendlist1.remove(friendlist1.indexOf(userId));
 				u.setFriendList(friendlist);
 				u1.setFriendList(friendlist1);
-				udao.delete(u);
-				udao.save(u);
-				udao.delete(u1);
-				udao.save(u1);
+				//udao.delete(u);
+				udao.saveAndFlush(u);
+				//udao.delete(u1);
+				udao.saveAndFlush(u1);
 				return friendlist;
 			}else {
 				throw new NoFriendFoundException(friendId+" not found");
