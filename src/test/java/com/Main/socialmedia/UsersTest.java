@@ -49,12 +49,6 @@ class UsersTest {
 	
 	int port=8080;
 	
-//	@AfterEach
-//	void demo() {
-//		udao.deleteAll();
-//		udao.flush();
-//	}
-	
 	@Test
 	void testAddUsers() {
 		List<String> list1 = Arrays.asList(new String[]{"B123", "C123"});
@@ -95,24 +89,6 @@ class UsersTest {
 		Assertions.assertEquals(u.getEmailId(), u1.getEmailId());
 		
 	}
-
-	@Test
-    void testDestroySession1() throws URISyntaxException, JsonProcessingException {
-		
-	    RestTemplate template=new RestTemplate();
-	    final String url="http://localhost:" + port + "/adduser";
-	    URI uri=new URI(url);
-	    
-	    List<String> list1 = Arrays.asList(new String[]{"B123", "C123"});
-	    Users u=new Users("peter100","peter@gmail.com","xxx",22,UserStatus.ACTIVE,list1,null,null,null,null);
-	    
-	    HttpHeaders headers=new HttpHeaders();
-        HttpEntity<Users> req=new HttpEntity<>(u,headers);
-        
-	    ResponseEntity<String> res=template.postForEntity(uri,req ,String.class);
-	    Assertions.assertEquals(HttpStatus.OK,res.getStatusCode());
-      
-    }
 	
 	
 	//--------------AuthenticateUser--------------
@@ -284,11 +260,7 @@ class UsersTest {
 			List<String> friendlist=u.getFriendList();
 			
 			String friendId="C123";
-			/*friendlist.remove(friendlist.indexOf(friendId));
-			u.setFriendList(friendlist);
-			
-			udao.delete(u1);
-			udao.save(u);*/
+
 			List<String> actual = null;
 			try {
 				 actual=userv.deletefriend(u.getUserId(), friendId);
@@ -345,16 +317,6 @@ class UsersTest {
 			String fromUserId="A123",toUserId="B123";
 			String message="Hello";
 			
-			
-			/*Users to=udao.findByUserId(toUserId);
-			/*if(to.getMessages().containsKey(fromUserId)) {
-				to.getMessages().get(fromUserId).add(message);
-			}
-			else {
-				ArrayList<String> list=new ArrayList<>();
-				list.add(message);
-				to.getMessages().put(fromUserId,list);
-			}*/
 			String actualstring="";
 			try {
 				actualstring = userv.sendmessage(fromUserId, toUserId, message);
@@ -373,7 +335,7 @@ class UsersTest {
 		@Test
 		void testcontrollersendmessage() throws URISyntaxException {
 			RestTemplate temp=new RestTemplate();
-			final String url="http://localhost:8080/sendmessage/A123/B123/hi";
+			final String url="http://localhost:8080/sendmessage/A123/B123";
 			
 			URI uri=new URI(url);
 			

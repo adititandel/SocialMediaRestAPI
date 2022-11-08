@@ -79,40 +79,24 @@ public class FriendRequestTest {
 		long count1=frDao.count()-count;
 		Assertions.assertEquals(count1, 1);
 	}
-	@Test
-	void testControllerGetRequests() throws URISyntaxException {
-		RestTemplate temp=new RestTemplate();
-		final String url="http://localhost:8080/getmyrequests";
-		URI uri=new URI(url);
-		String frExpected="user1";
-		HttpHeaders headers=new HttpHeaders();
-        HttpEntity<String> req=new HttpEntity<>(frExpected,headers);
-		ResponseEntity<String> res = temp.postForEntity(uri,req,String.class);
-		Assertions.assertEquals(HttpStatus.OK, res.getStatusCode());
-		
-	}
-	
-	@Test
-    void testcontrollerAddRequest() throws URISyntaxException {
-        RestTemplate temp=new RestTemplate();
-        final String url="http://localhost:8080/sendrequest";
-        FriendRequest frExpected=new FriendRequest();
-		frExpected.setRequestId(1);
-		frExpected.setRequestedBy("abc");
-		frExpected.setRequestedTo("def");
-		frExpected.setDate(new Date(2022,9,1));   
-        URI uri=new URI(url);        
-        HttpHeaders headers=new HttpHeaders();
-        HttpEntity<FriendRequest> req=new HttpEntity<>(frExpected,headers);
-        ResponseEntity <String> res=temp.postForEntity(uri,req, String.class);
-        Assertions.assertEquals(HttpStatus.OK, res.getStatusCode());
-    }	
+
+//	@Test
+//	void testControllerGetRequests() throws URISyntaxException {
+//		RestTemplate temp=new RestTemplate();
+//		final String url="http://localhost:8080/getmyrequests";
+//		URI uri=new URI(url);
+//		String frExpected="user1";
+//		HttpHeaders headers=new HttpHeaders();
+//        HttpEntity<String> req=new HttpEntity<>(frExpected,headers);
+//		ResponseEntity<String> res = temp.postForEntity(uri,req,String.class);
+//		Assertions.assertEquals(HttpStatus.OK, res.getStatusCode());
+//		
+//	}
 	
 //	@Test
-//    void testcontrollerAcceptRequest() throws URISyntaxException {
+//    void testcontrollerAddRequest() throws URISyntaxException {
 //        RestTemplate temp=new RestTemplate();
-//	    temp.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
-//        final String url="http://localhost:8989/acceptrequest";
+//        final String url="http://localhost:8080/sendrequest";
 //        FriendRequest frExpected=new FriendRequest();
 //		frExpected.setRequestId(1);
 //		frExpected.setRequestedBy("abc");
@@ -121,10 +105,11 @@ public class FriendRequestTest {
 //        URI uri=new URI(url);        
 //        HttpHeaders headers=new HttpHeaders();
 //        HttpEntity<FriendRequest> req=new HttpEntity<>(frExpected,headers);
-//        ResponseEntity<String> a =temp.exchange(uri,HttpMethod.DELETE,req, String.class);
-//  
-//       Assertions.assertEquals("","");
-//    }
+//        ResponseEntity <String> res=temp.postForEntity(uri,req, String.class);
+//        Assertions.assertEquals(HttpStatus.OK, res.getStatusCode());
+//    }	
+
+
 	@Autowired
 	FriendRequestService frs;
 	@Test
@@ -136,7 +121,8 @@ public class FriendRequestTest {
 		frExpected.setDate(new Date(2022,9,1));
 		frDao.deleteAll();
 		frDao.flush();
-		frs.sendaRequest(frExpected);
+		
+		frs.sendaRequest("abc", "def");
 		List<FriendRequest>frl=frs.getRequests("def");
 		int c1=frl.size();
 		Assertions.assertEquals(c1,1);
@@ -148,26 +134,5 @@ public class FriendRequestTest {
 		 Assertions.assertEquals(c3,0);
 		 
 	}
-//	@Autowired
-//	UsersDao ud;
-//	@Test
-//	void testServicesAcceptRequest() {
-//		Users u1=new Users();
-//		Users u2=new Users();
-//		u1.setUserId("abc");
-//		u2.setUserId("def");
-//		ud.deleteAll();ud.flush();
-//		ud.save(u1);ud.save(u2);ud.flush();
-//		FriendRequest frExpected=new FriendRequest();
-//		frExpected.setRequestedBy("abc");
-//		frExpected.setRequestedTo("def");
-//		frExpected.setDate(new Date(2022,9,1));
-//		frDao.deleteAll();
-//		frDao.flush();
-//		frs.sendaRequest(frExpected);
-//		 long c4=frDao.count();
-//		 frs.acceptRequest(frExpected);
-//		 long c5=frDao.count();
-//		Assertions.assertEquals(c4,c5-1);
-//		}
+	
 }

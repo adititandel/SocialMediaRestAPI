@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dao.FriendRequestDAO;
@@ -23,19 +24,19 @@ public class FriendRequestController {
 	FriendRequestService frService;
 	
 	@PostMapping("/sendrequest")
-	public ResponseEntity sendRequest(@RequestBody FriendRequest i) {
-		
-    	return frService.sendaRequest(i);
-		
-	}
+	public ResponseEntity sendRequest(@RequestParam String sentBy,@RequestParam String  sentTo) {
+
+        return frService.sendaRequest(sentBy,sentTo);
+
+    }
     @PostMapping("/getmyrequests")
-	public List<FriendRequest> getMyRequests(@RequestBody String a){
+	public List<FriendRequest> getMyRequests(@RequestParam String a){
     	
 		return frService.getRequests(a);		
 	}
     
     @DeleteMapping("/deleterequest")
-    public ResponseEntity deleteRequest(@RequestBody Integer i) {
+    public ResponseEntity deleteRequest(@RequestParam Integer i) {
     	
 		return frService.deleteaRequest(i);
 
@@ -43,8 +44,8 @@ public class FriendRequestController {
      	
    
     @DeleteMapping("/acceptrequest")
-    public ResponseEntity acceptRequest(@RequestBody FriendRequest i) {
-		
-		return frService.acceptRequest(i);
-		}
+    public ResponseEntity acceptRequest(@RequestParam Integer i) {
+       
+        return frService.acceptRequest(i);
+    }
 }
